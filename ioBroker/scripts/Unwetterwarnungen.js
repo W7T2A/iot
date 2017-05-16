@@ -17,7 +17,9 @@ schedule("*/10 * * * *", function() {
 
                 for (var key in result.warnings) {
 
-                    switch (result.warnings[key][0]["regionName"]) {
+                	var warnung = result.warnings[key][0];
+
+                    switch (warnung.regionName) {
 
                         // Replace --- with the regions you want to track
                         case "---":
@@ -32,18 +34,17 @@ schedule("*/10 * * * *", function() {
                                 if (gesendeteWarnungen.indexOf(key) > -1) {
                                     break;
                                 } else {
-                                    var warnung = result.warnings[key][0];
-                                    var startDate = new Date(warnung["start"]);
-                                    var endDate = new Date(warnung["end"]);
+                                    var startDate = new Date(warnung.start);
+                                    var endDate = new Date(warnung.end);
 
-                                    if (warnung["end"] === null || startDate === endDate) {
+                                    if (warnung.end === null || startDate === endDate) {
                                         sendTo("telegram.0", {
-                                            text: "Unwetterwarnung: " + startDate.toLocaleDateString("de-DE") + " => " + warnung["regionName"] + "\n\n" + warnung["event"] + "\n\n" + warnung["description"],
+                                            text: "Unwetterwarnung: " + startDate.toLocaleDateString("de-DE") + " => " + warnung.regionName + "\n\n" + warnung.event + "\n\n" + warnung.description,
                                             chatId: "<YOUR-CHAT-ID-HERE>"
                                         });
                                     } else {
                                         sendTo("telegram.0", {
-                                            text: "Unwetterwarnung: " + startDate.toLocaleDateString("de-DE") + " bis " + endDate.toLocaleDateString("de-DE") + " => " + warnung["regionName"] + "\n\n" + warnung["event"] + "\n\n" + warnung["description"],
+                                            text: "Unwetterwarnung: " + startDate.toLocaleDateString("de-DE") + " bis " + endDate.toLocaleDateString("de-DE") + " => " + warnung.regionName + "\n\n" + warnung.event + "\n\n" + warnung.description,
                                             chatId: "<YOUR-CHAT-ID-HERE>"
                                         });
                                     }
@@ -60,5 +61,5 @@ schedule("*/10 * * * *", function() {
                 console.log(e);
             }
         }
-    })
+    });
 });
